@@ -34,8 +34,46 @@ RSpec.describe "User Registration" do
     fill_in :user_name, with: 'billybob'
     fill_in :user_email, with: 'billy.bob@gmail.com'
     fill_in :user_password, with: 'sample password'
+    fill_in :user_password_confirmation, with: "sample password"
 
     click_button 'Create New User'
     expect(page).to have_content("billybob's Dashboard")
+    expect(page).to have_content("Welcome, #{User.last.name}!")
+  end
+
+  describe 'sad path' do
+    it "user fails to fill in name or email or password and gets a pop up message" do
+      visit register_path
+
+      fill_in :user_name, with: ''
+      fill_in :user_email, with: 'billy.bob@gmail.com'
+      fill_in :user_password, with: 'sample password'
+      fill_in :user_password_confirmation, with: "sample password"
+
+      click_button 'Create New User'
+      expect(current_path).to eq(register_path)
+      expect(page).to have_content(/Name can't be blank/)
+      
+      visit register_path
+
+      fill_in :user_name, with: 'Pam'
+      fill_in :user_email, with: ''
+      fill_in :user_password, with: 'sample password'
+      fill_in :user_password_confirmation, with: "sample password"
+
+      click_button 'Create New User'
+      expect(current_path).to eq(register_path)
+      expect(page).to have_content(/Email can't be blank/)
+      visit register_path
+
+      fill_in :user_name, with: 'Bill'
+      fill_in :user_email, with: 'billy.bob@gmail.com'
+      fill_in :user_password, with: ''
+      fill_in :user_password_confirmation, with: "sample password"
+
+      click_button 'Create New User'
+      expect(current_path).to eq(register_path)
+      expect(page).to have_content(/Password can't be blank/)
+    end
   end
 end

@@ -25,4 +25,16 @@ RSpec.describe "User Registration" do
     expect(page).to have_content("Email has already been taken")
     
   end
+
+  it 'creates a new user with a password' do
+    visit register_path
+
+    fill_in :user_name, with: 'billybob'
+    fill_in :user_email, with: 'billy.bob@gmail.com'
+    # save_and_open_page
+    fill_in :user_password, with: 'sample password'
+
+    click_button 'Create New User'
+    expect(page).to have_content("billybob's Dashboard")
+  end
 end

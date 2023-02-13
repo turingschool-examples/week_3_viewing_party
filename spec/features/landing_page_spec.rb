@@ -32,6 +32,17 @@ RSpec.describe 'Landing Page' do
             expect(page).to have_content(user1.email)
             expect(page).to have_content(user2.email)
         end     
-
     end 
+
+    it 'has link for log in' do
+        expect(page).to have_button('Log In')
+    end
+
+    it 'when log in is clicked user is taken to log in page where they can enter their unique email and password' do
+        click_button 'Log In'
+
+        expect(current_path).to eq('/login')
+        expect(page).to have_field(:email)
+        expect(page).to have_field(:password)
+    end
 end

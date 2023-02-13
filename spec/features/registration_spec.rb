@@ -7,6 +7,7 @@ RSpec.describe "User Registration" do
     fill_in :user_name, with: 'User One'
     fill_in :user_email, with:'user1@example.com'
     fill_in :user_password, with: 'test'
+    fill_in :user_password_confirmation, with: 'test'
     click_button 'Create New User'
 
     expect(current_path).to eq(user_path(User.last.id))
@@ -21,6 +22,7 @@ RSpec.describe "User Registration" do
     fill_in :user_name, with: 'User Two'
     fill_in :user_email, with:'notunique@example.com'
     fill_in :user_password, with: 'test'
+    fill_in :user_password_confirmation, with: 'test'
     click_button 'Create New User'
 
     expect(current_path).to eq(register_path)
@@ -53,7 +55,7 @@ RSpec.describe "User Registration" do
       click_button 'Create New User'
       expect(current_path).to eq(register_path)
       expect(page).to have_content(/Name can't be blank/)
-      
+    
       visit register_path
 
       fill_in :user_name, with: 'Pam'
@@ -69,11 +71,23 @@ RSpec.describe "User Registration" do
       fill_in :user_name, with: 'Bill'
       fill_in :user_email, with: 'billy.bob@gmail.com'
       fill_in :user_password, with: ''
-      fill_in :user_password_confirmation, with: "sample password"
+      fill_in :user_password_confirmation, with: ""
 
       click_button 'Create New User'
       expect(current_path).to eq(register_path)
       expect(page).to have_content(/Password can't be blank/)
+    end
+
+    it 'when password doesnt match password_confirmation the user is redirected to /register and given a message' do
+      visit register_path
+
+      fill_in :user_name, with: 'bob'
+      fill_in :user_email, with: 'billy.bob@gmail.com'
+      fill_in :user_password, with: 'sample password'
+      fill_in :user_password_confirmation, with: "wrong password"
+
+      click_button 'Create New User'
+      expect(page).to have_content(/Passwords must match/)
     end
   end
 end

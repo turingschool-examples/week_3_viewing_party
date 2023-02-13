@@ -14,14 +14,20 @@ class UsersController <ApplicationController
     def create 
         user = user_params
         user[:email] = user[:email].downcase
-        new_user = User.create(user)
-        if new_user.save
-            redirect_to user_path(new_user)
-            flash[:success] = "Welcome, #{new_user.name}!"
-        else  
-            flash[:error] = new_user.errors.full_messages.to_sentence
+
+        if user[:password] == params[:user][:password_confirmation]     
+            new_user = User.create(user)
+            if new_user.save
+                redirect_to user_path(new_user)
+                flash[:success] = "Welcome, #{new_user.name}!"
+            else  
+                flash[:error] = new_user.errors.full_messages.to_sentence
+                redirect_to register_path
+            end 
+        else
+            flash[:error] = 'Passwords must match'
             redirect_to register_path
-        end 
+        end
     end 
 
     private 

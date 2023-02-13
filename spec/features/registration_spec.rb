@@ -6,6 +6,7 @@ RSpec.describe "User Registration" do
 
     fill_in :user_name, with: 'User One'
     fill_in :user_email, with:'user1@example.com'
+    fill_in :user_password, with: 'test'
     click_button 'Create New User'
 
     expect(current_path).to eq(user_path(User.last.id))
@@ -13,12 +14,13 @@ RSpec.describe "User Registration" do
   end 
 
   it 'does not create a user if email isnt unique' do 
-    User.create(name: 'User One', email: 'notunique@example.com')
+    User.create(name: 'User One', email: 'notunique@example.com', password: 'monkey')
 
     visit register_path
     
     fill_in :user_name, with: 'User Two'
     fill_in :user_email, with:'notunique@example.com'
+    fill_in :user_password, with: 'test'
     click_button 'Create New User'
 
     expect(current_path).to eq(register_path)
@@ -31,7 +33,6 @@ RSpec.describe "User Registration" do
 
     fill_in :user_name, with: 'billybob'
     fill_in :user_email, with: 'billy.bob@gmail.com'
-    # save_and_open_page
     fill_in :user_password, with: 'sample password'
 
     click_button 'Create New User'

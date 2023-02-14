@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_13_175113) do
+ActiveRecord::Schema.define(version: 2023_02_14_212426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,4 +27,16 @@ ActiveRecord::Schema.define(version: 2023_02_13_175113) do
     t.string "password_digest"
   end
 
+  create_table "viewing_parties", force: :cascade do |t|
+    t.string "duration"
+    t.string "time"
+    t.string "date"
+    t.bigint "movie_id"
+    t.bigint "user_id"
+    t.index ["movie_id"], name: "index_viewing_parties_on_movie_id"
+    t.index ["user_id"], name: "index_viewing_parties_on_user_id"
+  end
+
+  add_foreign_key "viewing_parties", "movies"
+  add_foreign_key "viewing_parties", "users"
 end

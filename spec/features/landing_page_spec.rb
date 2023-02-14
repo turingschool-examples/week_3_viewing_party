@@ -81,4 +81,8 @@ RSpec.describe 'Landing Page' do
         expect(page).to have_button('Create New User')
         expect(page).to_not have_button('Log Out')
     end
+
+    it 'visitors will be redirected to landing page when they try to go to a dashboard without registering' do
+        visit ''
+    end
 end

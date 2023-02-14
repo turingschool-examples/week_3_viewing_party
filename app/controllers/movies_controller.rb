@@ -1,4 +1,6 @@
 class MoviesController < ApplicationController
+    before_action :validate_user
+
     def index 
         @user = User.find(params[:id])
         @movies = Movie.all

@@ -35,4 +35,11 @@ RSpec.describe 'Movies Index Page' do
         expect(page).to have_content(movie_1.description)
         expect(page).to have_content(movie_1.rating)
     end 
+
+    it 'user will get a message of needing to log in before they can see a user/id/movies/id show page' do
+        visit movie_path(@user1.id, Movie.first.id )
+
+        expect(current_path).to eq('/')
+        expect(page).to have_content(/You must be logged in to access a user dashboard. Please log in or register./)
+    end
 end

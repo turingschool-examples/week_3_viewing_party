@@ -53,11 +53,4 @@ class UsersController <ApplicationController
         params[:user][:email].downcase!
         params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end 
-
-    def validate_user
-        if session[:user_id].nil?
-            flash[:error] = "You must be logged in to access a user dashboard. Please log in or register."
-            redirect_to '/'
-        end
-    end
 end 

@@ -87,7 +87,7 @@ RSpec.describe "User Registration" do
       fill_in :user_password_confirmation, with: "wrong password"
 
       click_button 'Create New User'
-      expect(page).to have_content(/Passwords must match/)
+      expect(page).to have_content(/Password confirmation doesn't match Password/)
     end
   end
 end

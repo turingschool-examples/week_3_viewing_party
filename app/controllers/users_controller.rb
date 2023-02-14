@@ -13,21 +13,15 @@ class UsersController <ApplicationController
 
     def create 
         user = user_params
-        user[:email] = user[:email].downcase
-
-        if user[:password] == params[:user][:password_confirmation]     
-            new_user = User.create(user)
-            if new_user.save
-                redirect_to user_path(new_user)
-                flash[:success] = "Welcome, #{new_user.name}!"
-            else  
-                flash[:error] = new_user.errors.full_messages.to_sentence
-                redirect_to register_path
-            end 
-        else
-            flash[:error] = 'Passwords must match'
+        new_user = User.create(user)
+        if new_user.save
+            session[:user_id] = new_user.id
+            redirect_to user_path(new_user)
+            flash[:success] = "Welcome, #{new_user.name}!"
+        else  
+            flash[:error] = new_user.errors.full_messages.to_sentence
             redirect_to register_path
-        end
+        end 
     end 
 
     def login_form
@@ -36,7 +30,8 @@ class UsersController <ApplicationController
 
     def login_user
         user = User.find_by(email: params[:email])
-        if user.authenticate(params[:password])
+        if user && user.authenticate(params[:password])
+            session[:user_id] = user.id
             flash[:success] = "Welcome, #{user.name}!"
             redirect_to user_path(user.id)
         else
@@ -45,9 +40,15 @@ class UsersController <ApplicationController
         end
     end
 
+    def logout_user
+        session.delete(:user_id)
+        redirect_to '/'
+    end
+
     private 
 
     def user_params 
-        params.require(:user).permit(:name, :email, :password)
+        params[:user][:email].downcase!
+        params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end 
 end 

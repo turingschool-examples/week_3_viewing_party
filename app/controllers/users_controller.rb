@@ -1,4 +1,5 @@
 class UsersController <ApplicationController 
+    before_action :validate_user, only: :show
     def new 
         @user = User.new()
     end 
@@ -10,6 +11,7 @@ class UsersController <ApplicationController
     def create 
         user = User.create(user_params)
         if user.save
+            session[:id] = user.id
             redirect_to user_path(user)
         else  
             flash[:error] = user.errors.full_messages.to_sentence
@@ -24,6 +26,7 @@ class UsersController <ApplicationController
     def login_user
         user = User.find_by(email: params[:email])
         if user && user.authenticate(params[:password])
+            session[:id] = user.id
             redirect_to "/users/#{user.id}"
         else 
             flash[:error] = "Bad Credentials, try again."

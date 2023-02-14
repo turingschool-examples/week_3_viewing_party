@@ -15,6 +15,7 @@ class UsersController <ApplicationController
     def create 
         user = User.create(user_params)
         if user.save
+            flash[:success] = "Welcome, #{user.name}"
             redirect_to user_path(user)
         else  
             flash[:error] = user.errors.full_messages.to_sentence
@@ -22,14 +23,31 @@ class UsersController <ApplicationController
         end 
     end 
 
-    def password
-        @password ||= Password.new(password_hash)
+    def login_form
+
     end
 
-    def password=(new_password)
-        @password = Password.create(new_password)
-        self.password_hash = @password
+    def login_user
+        # require 'pry'; binding.pry
+        user = User.find_by(email: params[:email])
+        # require 'pry'; binding.pry
+        if user && user.authenticate(params[:password])
+            flash[:success] = "Welcome, #{user.email}!"
+            redirect_to user_path(user.id) 
+        else
+            flash[:error] = 'Log In Failed'
+            render :login_form
+        end
     end
+
+    # def password
+    #     @password ||= Password.new(password_hash)
+    # end
+
+    # def password=(new_password)
+    #     @password = Password.create(new_password)
+    #     self.password_hash = @password
+    # end
 
 
     private 

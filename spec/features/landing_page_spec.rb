@@ -22,9 +22,16 @@ RSpec.describe 'Landing Page' do
         expect(current_path).to eq(root_path)
     end 
 
-    it 'lists out existing users' do 
+    it 'lists out existing users when logged in' do 
         # @user1 = User.create(name: "User One", email: "user1@test.com", password: "test1234", password_confirmation: 'test1234')
         # @user2 = User.create(name: "User Two", email: "user2@test.com", password: "test12214", password_confirmation: 'test12214')
+        click_button 'Log In'
+
+        fill_in :email, with: @user1.email
+        fill_in :password, with: @user1.password
+
+        click_button 'Log in'
+        click_link 'Home'
 
         expect(page).to have_content('Existing Users:')
 

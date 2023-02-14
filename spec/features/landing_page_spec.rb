@@ -83,6 +83,10 @@ RSpec.describe 'Landing Page' do
     end
 
     it 'visitors will be redirected to landing page when they try to go to a dashboard without registering' do
-        visit ''
+        visit '/'
+        visit user_path(@user1.id)
+
+        expect(current_path).to eq('/')
+        expect(page).to have_content(/You must be logged in to access a user dashboard. Please log in or register./)
     end
 end

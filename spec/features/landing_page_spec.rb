@@ -59,4 +59,19 @@ RSpec.describe 'Landing Page' do
         expect(page).to_not have_button('Create New User')
         expect(page).to have_button('Log Out')
     end
+
+    it 'when log out is clicked user is taken back to the landing page and can see log in and create user buttons again' do
+        click_button 'Log In'
+
+        fill_in :email, with: @user1.email
+        fill_in :password, with: @user1.password
+
+        click_button 'Log in'
+        click_link 'Home'
+        click_button 'Log Out'
+
+        expect(page).to have_button('Log In')
+        expect(page).to have_button('Create New User')
+        expect(page).to_not have_button('Log Out')
+    end
 end

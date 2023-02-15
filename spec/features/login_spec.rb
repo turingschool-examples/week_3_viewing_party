@@ -5,7 +5,7 @@ RSpec.describe "Logging In" do
     user = User.create(name: "Meg", email: "meg@test.com", password: "password123", password_confirmation: "password123")
 
     visit root_path
-
+save_and_open_page
     click_on "Log In"
 
     expect(current_path).to eq('/login')
@@ -13,7 +13,7 @@ RSpec.describe "Logging In" do
     fill_in :email, with: user.email
     fill_in :password, with: user.password
 
-    click_on "Log In"
+    click_on "Log In as User"
 
     expect(current_path).to eq("/users/#{user.id}")
 
@@ -32,7 +32,7 @@ RSpec.describe "Logging In" do
     fill_in :email, with: user.email
     fill_in :password, with: "megadeath"
 
-    click_on "Log In"
+    click_on "Log In as User"
 
     expect(current_path).to eq("/login")
   end

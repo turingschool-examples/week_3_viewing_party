@@ -2,7 +2,7 @@
 <%= link_to "Log Out" %>
 <% else %>
 <%= button_to "Create New User", register_path, method: :get %>
-<li><%= link_to "Log In", login_path %></li>
+
 <section class='existing-users'>
     <p>Existing Users: </p>
     <% @users.each do |user| %>

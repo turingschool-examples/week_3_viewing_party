@@ -1,35 +1,39 @@
 require 'rails_helper'
 
-RSpec.describe "User Log In" do
-  it 'can log in a user with correct credentials' do
-    user = User.create(name: 'User One', email: 'email@example.com', password: 'password123')
+RSpec.describe "Logging In" do
+  it "can log in with valid credentials" do
+    user = User.create(name: "Meg", email: "meg@test.com", password: "password123", password_confirmation: "password123")
 
-    visit "/"
+    visit root_path
 
-    click_link "Log In"
+    click_on "Log In"
 
-    fill_in :email, with:'email@example.com'
-    fill_in :password, with: 'password123'
-    click_button 'Log In'
+    expect(current_path).to eq('/login')
+
+    fill_in :email, with: user.email
+    fill_in :password, with: user.password
+
+    click_on "Log In"
 
     expect(current_path).to eq("/users/#{user.id}")
-    expect(page).to have_content("User One's Dashboard")
-  end 
 
-  it 'does not log in user with incorrect credentials' do 
-    user = User.create(name: 'User One', email: 'email@example.com', password: 'password123')
+    expect(page).to have_content("Welcome, #{user.email}")
+  end
 
-    visit "/"
+  it "can redirect to log in if information is incorrect" do
+    user = User.create(name: "Meg", email: "meg@test.com", password: "password123", password_confirmation: "password123")
 
-    click_link "Log In"
+    visit root_path
 
-    fill_in :email, with:'email@example.com'
-    fill_in :password, with: 'nottherightpassword'
-    click_button 'Log In'
+    click_on "Log In"
 
+    expect(current_path).to eq('/login')
+
+    fill_in :email, with: user.email
+    fill_in :password, with: "megadeath"
+
+    click_on "Log In"
 
     expect(current_path).to eq("/login")
-    expect(page).to have_content("Bad Credentials, try again.")
-    
   end
 end

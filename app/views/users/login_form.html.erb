@@ -1,9 +1,21 @@
+<%# 
 <h1>Log In</h1>
 
 <%= form_with url: '/login', local: true do |form| %>
+  <%# <%= form.label :email %>
+  <%# <%= form.text_field :email, required: true %><br> %>
+  <%# <%= form.label :password %> %>
+  <%# <%= form.password_field :password, required: true %><br> %>
+  <%# <%= form.submit "Log In" %> %>
+<%# <% end %> %> %> %>
+
+<h3> Log In </h3>
+
+<%= form_with url: '/login', method: :post, local: true do |form| %>
   <%= form.label :email %>
-  <%= form.text_field :email, required: true %><br>
+  <%= form.text_field :email%><br>
   <%= form.label :password %>
-  <%= form.password_field :password, required: true %><br>
+  <%= form.text_field :password %><br>
+
   <%= form.submit "Log In" %>
 <% end %>

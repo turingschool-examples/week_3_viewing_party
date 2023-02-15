@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 class UsersController <ApplicationController 
     before_action :validate_user, only: :show
     def new 
@@ -12,6 +14,7 @@ class UsersController <ApplicationController
         user = User.create(user_params)
         if user.save
             session[:id] = user.id
+            flash[:success] = "Welcome, #{user.name}"
             redirect_to user_path(user)
         else  
             flash[:error] = user.errors.full_messages.to_sentence
@@ -37,6 +40,6 @@ class UsersController <ApplicationController
     private 
 
     def user_params 
-        params.require(:user).permit(:name, :email, :password)
+        params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end 
 end 

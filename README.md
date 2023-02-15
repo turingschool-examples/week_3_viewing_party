@@ -1,24 +1,11 @@
-# README
+# Viewing Party Lite - Week 3 Version
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This repo can be used by any students during BE week 3.
 
-Things you may want to cover:
+## Set Up
 
-* Ruby version
+1. fork and clone
+2. bundle install
+3. rails db:{drop,create,migrate,seed}
 
-* System dependencies
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
